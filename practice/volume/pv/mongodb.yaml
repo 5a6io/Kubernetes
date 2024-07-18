@@ -5,15 +5,15 @@ metadata:
   labels:
     name: mongodb
 spec:
-  affinity: 
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: topology.ebs.csi.aws.com/zone
-            operator: In 
-            values: 
-            - ap-northeast-2a   
+  # affinity: 
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: topology.ebs.csi.aws.com/zone
+  #           operator: In 
+  #           values: 
+  #           - ap-northeast-2a   
   containers:
   - name: mongodb
     image: mongo
@@ -30,4 +30,5 @@ spec:
   volumes:
   - name: mongodb-data 
     persistentVolumeClaim: 
-      claimName: fast
+      claimName: mongodb-pvc-dynamic
+      

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fortune-deploy
+  labels:
+    app: fortune
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fortune
+  template:
+    metadata:
+      labels:
+        app: fortune
+    spec:
+      containers:
+      - image: yoonhyemi/fortune
+        name: html-generator
+        volumeMounts:
+        - name: html
+          mountPath: /var/htdocs
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      - image: nginx:alpine
+        name: web-server
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80
+            protocol: TCP
+      volumes:
+      - name: html
+        emptyDir: {}
